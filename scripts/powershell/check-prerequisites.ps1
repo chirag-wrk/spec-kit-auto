@@ -12,6 +12,7 @@
 #   -RequireTasks       Require tasks.md to exist (for implementation phase)
 #   -IncludeTasks       Include tasks.md in AVAILABLE_DOCS list
 #   -PathsOnly          Only output path variables (no validation)
+#   -SpecOnly           Require spec.md only (for AC audit before plan.md exists)
 #   -Help, -h           Show help message
 
 [CmdletBinding()]
@@ -20,6 +21,7 @@ param(
     [switch]$RequireTasks,
     [switch]$IncludeTasks,
     [switch]$PathsOnly,
+    [switch]$SpecOnly,
     [switch]$Help
 )
 
@@ -37,6 +39,7 @@ OPTIONS:
   -RequireTasks       Require tasks.md to exist (for implementation phase)
   -IncludeTasks       Include tasks.md in AVAILABLE_DOCS list
   -PathsOnly          Only output path variables (no prerequisite validation)
+  -SpecOnly           Require feature dir + spec.md only (before plan.md exists)
   -Help, -h           Show this help message
 
 EXAMPLES:
@@ -92,7 +95,13 @@ if (-not (Test-Path $paths.FEATURE_DIR -PathType Container)) {
     exit 1
 }
 
-if (-not (Test-Path $paths.IMPL_PLAN -PathType Leaf)) {
+if ($SpecOnly) {
+    if (-not (Test-Path $paths.FEATURE_SPEC -PathType Leaf)) {
+        Write-Output "ERROR: spec.md not found in $($paths.FEATURE_DIR)"
+        Write-Output "Run /speckit.specify first to create the specification."
+        exit 1
+    }
+} elseif (-not (Test-Path $paths.IMPL_PLAN -PathType Leaf)) {
     Write-Output "ERROR: plan.md not found in $($paths.FEATURE_DIR)"
     Write-Output "Run /speckit.plan first to create the implementation plan."
     exit 1

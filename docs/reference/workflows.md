@@ -162,9 +162,15 @@ steps:
     input:
       args: "{{ inputs.spec }}"
 
+  - id: acaudit
+    command: speckit.acaudit
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
   - id: review-spec
     type: gate
-    message: "Review the generated spec before planning."
+    message: "Review the generated spec and AC audit (checklists/ac-audit.md) before planning."
     options: [approve, reject]
     on_reject: abort
 
@@ -174,9 +180,15 @@ steps:
     input:
       args: "{{ inputs.spec }}"
 
+  - id: planaudit
+    command: speckit.planaudit
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
   - id: review-plan
     type: gate
-    message: "Review the plan before generating tasks."
+    message: "Review the plan, UNDERSTANDING_GAPS.md, and ASSUMPTIONS.md before generating tasks."
     options: [approve, reject]
     on_reject: abort
 
@@ -197,17 +209,21 @@ This produces the following execution flow:
 
 ```mermaid
 flowchart TB
-    A["specify<br/>(command)"] --> B{"review-spec<br/>(gate)"}
+    A["specify<br/>(command)"] --> A2["acaudit<br/>(command)"]
+    A2 --> B{"review-spec<br/>(gate)"}
     B -- approve --> C["plan<br/>(command)"]
     B -- reject --> X1["⏹ Abort"]
-    C --> D{"review-plan<br/>(gate)"}
+    C --> C2["planaudit<br/>(command)"]
+    C2 --> D{"review-plan<br/>(gate)"}
     D -- approve --> E["tasks<br/>(command)"]
     D -- reject --> X2["⏹ Abort"]
     E --> F["implement<br/>(command)"]
 
     style A fill:#49a,color:#fff
+    style A2 fill:#49a,color:#fff
     style B fill:#a94,color:#fff
     style C fill:#49a,color:#fff
+    style C2 fill:#49a,color:#fff
     style D fill:#a94,color:#fff
     style E fill:#49a,color:#fff
     style F fill:#49a,color:#fff

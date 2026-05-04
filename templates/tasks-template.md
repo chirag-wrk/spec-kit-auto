@@ -17,6 +17,7 @@ description: "Task list template for feature implementation"
 - **[P]**: Can run in parallel (different files, no dependencies)
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
 - Include exact file paths in descriptions
+- **Maps to** (REQUIRED): On the line immediately after each task, add `**Maps to:** SC-01, AC-03` (use IDs from `spec.md`: FR-xx, SC-xx, AC-xx). Every acceptance criterion in the spec should appear on at least one task.
 
 ## Path Conventions
 
@@ -31,6 +32,7 @@ description: "Task list template for feature implementation"
   
   The __SPECKIT_COMMAND_TASKS__ command MUST replace these with actual tasks based on:
   - User stories from spec.md (with their priorities P1, P2, P3...)
+  - Acceptance criteria and success criteria IDs from spec.md (trace every AC/SC to at least one task via **Maps to:**)
   - Feature requirements from plan.md
   - Entities from data-model.md
   - Endpoints from contracts/
@@ -49,8 +51,11 @@ description: "Task list template for feature implementation"
 **Purpose**: Project initialization and basic structure
 
 - [ ] T001 Create project structure per implementation plan
+  **Maps to:** FR-01
 - [ ] T002 Initialize [language] project with [framework] dependencies
+  **Maps to:** FR-01
 - [ ] T003 [P] Configure linting and formatting tools
+  **Maps to:** _foundational_
 
 ---
 
@@ -63,11 +68,17 @@ description: "Task list template for feature implementation"
 Examples of foundational tasks (adjust based on your project):
 
 - [ ] T004 Setup database schema and migrations framework
+  **Maps to:** FR-02, SC-01
 - [ ] T005 [P] Implement authentication/authorization framework
+  **Maps to:** AC-01, AC-02
 - [ ] T006 [P] Setup API routing and middleware structure
+  **Maps to:** FR-03
 - [ ] T007 Create base models/entities that all stories depend on
+  **Maps to:** FR-02
 - [ ] T008 Configure error handling and logging infrastructure
+  **Maps to:** NFR-01
 - [ ] T009 Setup environment configuration management
+  **Maps to:** NFR-02
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -84,16 +95,24 @@ Examples of foundational tasks (adjust based on your project):
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
 - [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+  **Maps to:** AC-10
 - [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+  **Maps to:** AC-11
 
 ### Implementation for User Story 1
 
 - [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
+  **Maps to:** AC-04
 - [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
+  **Maps to:** AC-04
 - [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
+  **Maps to:** AC-05, SC-02
 - [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+  **Maps to:** AC-06
 - [ ] T016 [US1] Add validation and error handling
+  **Maps to:** AC-07
 - [ ] T017 [US1] Add logging for user story 1 operations
+  **Maps to:** NFR-01
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -108,14 +127,20 @@ Examples of foundational tasks (adjust based on your project):
 ### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
 
 - [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
+  **Maps to:** AC-20
 - [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+  **Maps to:** AC-21
 
 ### Implementation for User Story 2
 
 - [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
+  **Maps to:** AC-22
 - [ ] T021 [US2] Implement [Service] in src/services/[service].py
+  **Maps to:** AC-23
 - [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
+  **Maps to:** AC-24
 - [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+  **Maps to:** AC-25
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -130,13 +155,18 @@ Examples of foundational tasks (adjust based on your project):
 ### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
 
 - [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
+  **Maps to:** AC-30
 - [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+  **Maps to:** AC-31
 
 ### Implementation for User Story 3
 
 - [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
+  **Maps to:** AC-32
 - [ ] T027 [US3] Implement [Service] in src/services/[service].py
+  **Maps to:** AC-33
 - [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+  **Maps to:** AC-34
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -151,11 +181,17 @@ Examples of foundational tasks (adjust based on your project):
 **Purpose**: Improvements that affect multiple user stories
 
 - [ ] TXXX [P] Documentation updates in docs/
+  **Maps to:** SC-03
 - [ ] TXXX Code cleanup and refactoring
+  **Maps to:** NFR-03
 - [ ] TXXX Performance optimization across all stories
+  **Maps to:** SC-01, NFR-04
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
+  **Maps to:** AC-99
 - [ ] TXXX Security hardening
+  **Maps to:** NFR-05
 - [ ] TXXX Run quickstart.md validation
+  **Maps to:** AC-98
 
 ---
 

@@ -100,8 +100,8 @@ class SkillsIntegrationTests:
         skill_files = [f for f in created if "scripts" not in f.parts]
 
         expected_commands = {
-            "analyze", "checklist", "clarify", "constitution",
-            "implement", "plan", "specify", "tasks", "taskstoissues",
+            "acaudit", "analyze", "checklist", "clarify", "constitution",
+            "implement", "plan", "planaudit", "specify", "tasks", "taskstoissues",
         }
 
         # Derive command names from the skill directory names

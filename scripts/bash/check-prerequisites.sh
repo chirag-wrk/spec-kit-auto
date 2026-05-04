@@ -12,6 +12,7 @@
 #   --require-tasks     Require tasks.md to exist (for implementation phase)
 #   --include-tasks     Include tasks.md in AVAILABLE_DOCS list
 #   --paths-only        Only output path variables (no validation)
+#   --spec-only         Require spec.md only (for AC audit before plan.md exists)
 #   --help, -h          Show help message
 #
 # OUTPUTS:
@@ -26,6 +27,7 @@ JSON_MODE=false
 REQUIRE_TASKS=false
 INCLUDE_TASKS=false
 PATHS_ONLY=false
+SPEC_ONLY=false
 
 for arg in "$@"; do
     case "$arg" in
@@ -37,6 +39,9 @@ for arg in "$@"; do
             ;;
         --include-tasks)
             INCLUDE_TASKS=true
+            ;;
+        --spec-only)
+            SPEC_ONLY=true
             ;;
         --paths-only)
             PATHS_ONLY=true
@@ -52,6 +57,7 @@ OPTIONS:
   --require-tasks     Require tasks.md to exist (for implementation phase)
   --include-tasks     Include tasks.md in AVAILABLE_DOCS list
   --paths-only        Only output path variables (no prerequisite validation)
+  --spec-only         Require feature dir + spec.md only (before plan.md exists)
   --help, -h          Show this help message
 
 EXAMPLES:
@@ -119,7 +125,13 @@ if [[ ! -d "$FEATURE_DIR" ]]; then
     exit 1
 fi
 
-if [[ ! -f "$IMPL_PLAN" ]]; then
+if $SPEC_ONLY; then
+    if [[ ! -f "$FEATURE_SPEC" ]]; then
+        echo "ERROR: spec.md not found in $FEATURE_DIR" >&2
+        echo "Run /speckit.specify first to create the specification." >&2
+        exit 1
+    fi
+elif [[ ! -f "$IMPL_PLAN" ]]; then
     echo "ERROR: plan.md not found in $FEATURE_DIR" >&2
     echo "Run /speckit.plan first to create the implementation plan." >&2
     exit 1

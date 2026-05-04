@@ -125,10 +125,10 @@ class TestCopilotIntegration:
         agents_dir = tmp_path / ".github" / "agents"
         assert agents_dir.is_dir()
         agent_files = sorted(agents_dir.glob("speckit.*.agent.md"))
-        assert len(agent_files) == 9
+        assert len(agent_files) == 11
         expected_commands = {
-            "analyze", "checklist", "clarify", "constitution",
-            "implement", "plan", "specify", "tasks", "taskstoissues",
+            "acaudit", "analyze", "checklist", "clarify", "constitution",
+            "implement", "plan", "planaudit", "specify", "tasks", "taskstoissues",
         }
         actual_commands = {f.name.removeprefix("speckit.").removesuffix(".agent.md") for f in agent_files}
         assert actual_commands == expected_commands
@@ -178,21 +178,25 @@ class TestCopilotIntegration:
         assert result.exit_code == 0
         actual = sorted(p.relative_to(project).as_posix() for p in project.rglob("*") if p.is_file())
         expected = sorted([
+            ".github/agents/speckit.acaudit.agent.md",
             ".github/agents/speckit.analyze.agent.md",
             ".github/agents/speckit.checklist.agent.md",
             ".github/agents/speckit.clarify.agent.md",
             ".github/agents/speckit.constitution.agent.md",
             ".github/agents/speckit.implement.agent.md",
             ".github/agents/speckit.plan.agent.md",
+            ".github/agents/speckit.planaudit.agent.md",
             ".github/agents/speckit.specify.agent.md",
             ".github/agents/speckit.tasks.agent.md",
             ".github/agents/speckit.taskstoissues.agent.md",
+            ".github/prompts/speckit.acaudit.prompt.md",
             ".github/prompts/speckit.analyze.prompt.md",
             ".github/prompts/speckit.checklist.prompt.md",
             ".github/prompts/speckit.clarify.prompt.md",
             ".github/prompts/speckit.constitution.prompt.md",
             ".github/prompts/speckit.implement.prompt.md",
             ".github/prompts/speckit.plan.prompt.md",
+            ".github/prompts/speckit.planaudit.prompt.md",
             ".github/prompts/speckit.specify.prompt.md",
             ".github/prompts/speckit.tasks.prompt.md",
             ".github/prompts/speckit.taskstoissues.prompt.md",
@@ -205,6 +209,7 @@ class TestCopilotIntegration:
             ".specify/scripts/bash/check-prerequisites.sh",
             ".specify/scripts/bash/common.sh",
             ".specify/scripts/bash/create-new-feature.sh",
+            ".specify/scripts/bash/record-spec-snapshot.sh",
             ".specify/scripts/bash/setup-plan.sh",
             ".specify/templates/checklist-template.md",
             ".specify/templates/constitution-template.md",
@@ -237,21 +242,25 @@ class TestCopilotIntegration:
         assert result.exit_code == 0
         actual = sorted(p.relative_to(project).as_posix() for p in project.rglob("*") if p.is_file())
         expected = sorted([
+            ".github/agents/speckit.acaudit.agent.md",
             ".github/agents/speckit.analyze.agent.md",
             ".github/agents/speckit.checklist.agent.md",
             ".github/agents/speckit.clarify.agent.md",
             ".github/agents/speckit.constitution.agent.md",
             ".github/agents/speckit.implement.agent.md",
             ".github/agents/speckit.plan.agent.md",
+            ".github/agents/speckit.planaudit.agent.md",
             ".github/agents/speckit.specify.agent.md",
             ".github/agents/speckit.tasks.agent.md",
             ".github/agents/speckit.taskstoissues.agent.md",
+            ".github/prompts/speckit.acaudit.prompt.md",
             ".github/prompts/speckit.analyze.prompt.md",
             ".github/prompts/speckit.checklist.prompt.md",
             ".github/prompts/speckit.clarify.prompt.md",
             ".github/prompts/speckit.constitution.prompt.md",
             ".github/prompts/speckit.implement.prompt.md",
             ".github/prompts/speckit.plan.prompt.md",
+            ".github/prompts/speckit.planaudit.prompt.md",
             ".github/prompts/speckit.specify.prompt.md",
             ".github/prompts/speckit.tasks.prompt.md",
             ".github/prompts/speckit.taskstoissues.prompt.md",
@@ -264,6 +273,7 @@ class TestCopilotIntegration:
             ".specify/scripts/powershell/check-prerequisites.ps1",
             ".specify/scripts/powershell/common.ps1",
             ".specify/scripts/powershell/create-new-feature.ps1",
+            ".specify/scripts/powershell/record-spec-snapshot.ps1",
             ".specify/scripts/powershell/setup-plan.ps1",
             ".specify/templates/checklist-template.md",
             ".specify/templates/constitution-template.md",
@@ -284,8 +294,8 @@ class TestCopilotSkillsMode:
     """Tests for Copilot integration in --skills mode."""
 
     _SKILL_COMMANDS = [
-        "analyze", "checklist", "clarify", "constitution",
-        "implement", "plan", "specify", "tasks", "taskstoissues",
+        "acaudit", "analyze", "checklist", "clarify", "constitution",
+        "implement", "plan", "planaudit", "specify", "tasks", "taskstoissues",
     ]
 
     def _make_copilot(self):
@@ -613,6 +623,7 @@ class TestCopilotSkillsMode:
             ".specify/scripts/bash/check-prerequisites.sh",
             ".specify/scripts/bash/common.sh",
             ".specify/scripts/bash/create-new-feature.sh",
+            ".specify/scripts/bash/record-spec-snapshot.sh",
             ".specify/scripts/bash/setup-plan.sh",
             # Templates
             ".specify/templates/checklist-template.md",

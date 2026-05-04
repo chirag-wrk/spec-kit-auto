@@ -1,6 +1,10 @@
 ---
 description: Execute the implementation planning workflow using the plan template to generate design artifacts.
 handoffs: 
+  - label: Validate Plan Against Spec
+    agent: speckit.planaudit
+    prompt: Score plan fidelity against spec.md and list gaps before task generation.
+    send: true
   - label: Create Tasks
     agent: speckit.tasks
     prompt: Break the plan into tasks
@@ -70,7 +74,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Phase 1: Update agent context by running the agent script
    - Re-evaluate Constitution Check post-design
 
-4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
+4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts. **Mandatory next step**: Run `__SPECKIT_COMMAND_PLANAUDIT__` before `__SPECKIT_COMMAND_TASKS__` so plan/spec fidelity and `UNDERSTANDING_GAPS.md` are recorded.
 
 5. **Check for extension hooks**: After reporting, check if `.specify/extensions.yml` exists in the project root.
    - If it exists, read it and look for entries under the `hooks.after_plan` key

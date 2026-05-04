@@ -16,4 +16,5 @@ $ARGUMENTS
 
 3. Create dependency-ordered implementation tasks and store them in `<feature_directory>/tasks.md`.
    - Every task uses checklist format: `- [ ] [TaskID] Description with file path`
+   - After each task line add `**Maps to:**` with acceptance/success criteria IDs from `spec.md` (FR-xx, SC-xx, AC-xx)
    - Organized by phase: setup, foundational, user stories in priority order, polish

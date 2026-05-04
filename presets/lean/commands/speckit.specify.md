@@ -1,5 +1,14 @@
 ---
 description: Create a specification and store it in spec.md.
+handoffs:
+  - label: Run AC Audit Gate
+    agent: speckit.acaudit
+    prompt: Evaluate acceptance criteria completeness in spec.md before planning.
+    send: true
+  - label: Build Technical Plan
+    agent: speckit.plan
+    prompt: Create a plan for the spec. I am building with...
+    send: true
 ---
 
 ## User Input
@@ -21,3 +30,5 @@ $ARGUMENTS
    - Overview, functional requirements, user scenarios, success criteria
    - Every requirement must be testable
    - Make informed defaults for unspecified details
+
+4. **Mandatory next step**: Run `__SPECKIT_COMMAND_ACAUDIT__` before `__SPECKIT_COMMAND_PLAN__`.

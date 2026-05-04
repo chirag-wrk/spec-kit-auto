@@ -1,9 +1,14 @@
 ---
 description: Create or update the feature specification from a natural language feature description.
 handoffs: 
+  - label: Run AC Audit Gate
+    agent: speckit.acaudit
+    prompt: Evaluate acceptance criteria completeness in spec.md before planning.
+    send: true
   - label: Build Technical Plan
     agent: speckit.plan
     prompt: Create a plan for the spec. I am building with...
+    send: true
   - label: Clarify Spec Requirements
     agent: speckit.clarify
     prompt: Clarify specification requirements
@@ -232,7 +237,7 @@ Given that feature description, do this:
    - `SPECIFY_FEATURE_DIRECTORY` — the feature directory path
    - `SPEC_FILE` — the spec file path
    - Checklist results summary
-   - Readiness for the next phase (`__SPECKIT_COMMAND_CLARIFY__` or `__SPECKIT_COMMAND_PLAN__`)
+   - **Mandatory next step**: Run `__SPECKIT_COMMAND_ACAUDIT__` before planning (shift-left AC gate). After a PASS gate, proceed with `__SPECKIT_COMMAND_CLARIFY__` (if needed) or `__SPECKIT_COMMAND_PLAN__`.
 
 9. **Check for extension hooks**: After reporting completion, check if `.specify/extensions.yml` exists in the project root.
    - If it exists, read it and look for entries under the `hooks.after_specify` key

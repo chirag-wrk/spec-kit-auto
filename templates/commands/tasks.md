@@ -61,20 +61,23 @@ You **MUST** consider the user input before proceeding (if not empty).
 1. **Setup**: Run `{SCRIPT}` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **Load design documents**: Read from FEATURE_DIR:
-   - **Required**: plan.md (tech stack, libraries, structure), spec.md (user stories with priorities)
+   - **Required**: plan.md (tech stack, libraries, structure), spec.md (user stories, priorities, **acceptance criteria and success criteria IDs**)
+   - **Recommended before tasks**: `UNDERSTANDING_GAPS.md`, `ASSUMPTIONS.md`, and `checklists/ac-audit.md` when present (from `__SPECKIT_COMMAND_PLANAUDIT__` / `__SPECKIT_COMMAND_ACAUDIT__` gates)
    - **Optional**: data-model.md (entities), contracts/ (interface contracts), research.md (decisions), quickstart.md (test scenarios)
    - Note: Not all projects have all documents. Generate tasks based on what's available.
 
 3. **Execute task generation workflow**:
    - Load plan.md and extract tech stack, libraries, project structure
-   - Load spec.md and extract user stories with their priorities (P1, P2, P3, etc.)
+   - Load spec.md and extract user stories with their priorities (P1, P2, P3, etc.) **and** every acceptance criterion / success criterion with stable IDs (FR-xx, SC-xx, AC-xx as used in spec.md)
+   - If `UNDERSTANDING_GAPS.md` or `ASSUMPTIONS.md` exists: incorporate explicit gaps and logged assumptions into task ordering and notes (do not drop traceability)
    - If data-model.md exists: Extract entities and map to user stories
    - If contracts/ exists: Map interface contracts to user stories
    - If research.md exists: Extract decisions for setup tasks
    - Generate tasks organized by user story (see Task Generation Rules below)
+   - **For every task**: add a **Maps to** line listing the spec **acceptance criteria and/or success criteria IDs** that this task satisfies (minimum one AC or SC when the spec defines them; if none apply, write `**Maps to:** _unmapped — needs spec fix_`)
    - Generate dependency graph showing user story completion order
    - Create parallel execution examples per user story
-   - Validate task completeness (each user story has all needed tasks, independently testable)
+   - Validate task completeness (each user story has all needed tasks, independently testable; **no AC from spec.md left without at least one mapped task**)
 
 4. **Generate tasks.md**: Use `templates/tasks-template.md` as structure, fill with:
    - Correct feature name from plan.md
@@ -82,6 +85,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Phase 2: Foundational tasks (blocking prerequisites for all user stories)
    - Phase 3+: One phase per user story (in priority order from spec.md)
    - Each phase includes: story goal, independent test criteria, tests (if requested), implementation tasks
+   - Each task entry includes **Maps to** traceability (acceptance criteria / success criteria IDs from spec.md), not only `[US#]` labels
    - Final Phase: Polish & cross-cutting concerns
    - All tasks must follow the strict checklist format (see Task Generation Rules below)
    - Clear file paths for each task
@@ -142,6 +146,7 @@ Every task MUST strictly follow this format:
 
 ```text
 - [ ] [TaskID] [P?] [Story?] Description with file path
+  **Maps to:** SC-xx, AC-xx (and/or FR-xx)
 ```
 
 **Format Components**:
@@ -156,13 +161,22 @@ Every task MUST strictly follow this format:
    - User Story phases: MUST have story label
    - Polish phase: NO story label
 5. **Description**: Clear action with exact file path
+6. **Maps to** (REQUIRED): On the line **immediately after** each task, add `**Maps to:** SC-01, AC-03` (use real IDs from `spec.md`: FR-xx, SC-xx, AC-xx). Every acceptance criterion in the spec should appear on at least one task. If a task is purely infrastructural, map to the FR/SC it enables or write `**Maps to:** _foundational — see ASSUMPTIONS.md #n_` if documented there.
 
 **Examples**:
 
-- ✅ CORRECT: `- [ ] T001 Create project structure per implementation plan`
-- ✅ CORRECT: `- [ ] T005 [P] Implement authentication middleware in src/middleware/auth.py`
-- ✅ CORRECT: `- [ ] T012 [P] [US1] Create User model in src/models/user.py`
-- ✅ CORRECT: `- [ ] T014 [US1] Implement UserService in src/services/user_service.py`
+- ✅ CORRECT:
+  - `- [ ] T001 Create project structure per implementation plan`
+  - `  **Maps to:** FR-01`
+- ✅ CORRECT:
+  - `- [ ] T005 [P] Implement authentication middleware in src/middleware/auth.py`
+  - `  **Maps to:** AC-02, SC-01`
+- ✅ CORRECT:
+  - `- [ ] T012 [P] [US1] Create User model in src/models/user.py`
+  - `  **Maps to:** AC-04, AC-05`
+- ✅ CORRECT:
+  - `- [ ] T014 [US1] Implement UserService in src/services/user_service.py`
+  - `  **Maps to:** AC-06, FR-02`
 - ❌ WRONG: `- [ ] Create User model` (missing ID and Story label)
 - ❌ WRONG: `T001 [US1] Create model` (missing checkbox)
 - ❌ WRONG: `- [ ] [US1] Create User model` (missing Task ID)
