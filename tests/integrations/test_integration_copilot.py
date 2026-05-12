@@ -211,6 +211,7 @@ class TestCopilotIntegration:
             ".specify/scripts/bash/create-new-feature.sh",
             ".specify/scripts/bash/record-spec-snapshot.sh",
             ".specify/scripts/bash/setup-plan.sh",
+            ".specify/scripts/bash/setup-tasks.sh",
             ".specify/templates/checklist-template.md",
             ".specify/templates/constitution-template.md",
             ".specify/templates/plan-template.md",
@@ -275,6 +276,7 @@ class TestCopilotIntegration:
             ".specify/scripts/powershell/create-new-feature.ps1",
             ".specify/scripts/powershell/record-spec-snapshot.ps1",
             ".specify/scripts/powershell/setup-plan.ps1",
+            ".specify/scripts/powershell/setup-tasks.ps1",
             ".specify/templates/checklist-template.md",
             ".specify/templates/constitution-template.md",
             ".specify/templates/plan-template.md",
@@ -625,6 +627,7 @@ class TestCopilotSkillsMode:
             ".specify/scripts/bash/create-new-feature.sh",
             ".specify/scripts/bash/record-spec-snapshot.sh",
             ".specify/scripts/bash/setup-plan.sh",
+            ".specify/scripts/bash/setup-tasks.sh",
             # Templates
             ".specify/templates/checklist-template.md",
             ".specify/templates/constitution-template.md",
