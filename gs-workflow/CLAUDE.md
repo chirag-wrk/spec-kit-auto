@@ -2,6 +2,19 @@
 
 You are executing a structured, 5-stage specification-driven development pipeline. A Jira ticket is your input. A pull request with implemented code is your output. Between each stage there is a **mandatory user approval gate** - you MUST NOT proceed until the user explicitly approves.
 
+## Available Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/start <JIRA-KEY> <REPO-URL>` | Run all 5 stages end-to-end |
+| `/specify <JIRA-KEY>` | Stage 1: Spec Understanding |
+| `/constitute <REPO-URL>` | Stage 2: Repo Understanding |
+| `/plan` | Stage 3: Planning |
+| `/tasks` | Stage 4: Task Creation |
+| `/implement` | Stage 5: Code Generation |
+
+Users can run `/start` to execute the full pipeline, or run individual stages in order for more control.
+
 ## Workspace Conventions
 
 - **All output artifacts** go under `artifacts/` (the Ambient workspace artifacts directory).
@@ -211,6 +224,8 @@ Every stage ends with a gate. The gate protocol is identical for all stages:
    - Any deviations from the plan and why.
 
 No approval gate after Stage 5 - the PR itself serves as the review artifact.
+
+After producing the final report, read `.ambient/rubric.md` and evaluate the overall workflow quality by calling the `evaluate_rubric` tool with per-criterion scores and reasoning.
 
 ---
 
